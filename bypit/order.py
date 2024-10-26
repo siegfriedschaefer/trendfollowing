@@ -69,18 +69,21 @@ def main():
 
     if run_simulated == 'False':
 
-        # places a market order to sell base asset
+        # places a limit order to sell or buy a base asset with a specified price and size
+        # in my opinion limit orders are more consistent than market orders because
+        # you can specify the price and size you want to trade easily
 
         now = datetime.now(timezone.utc)
-        order_index = int(now.day * 24 * 60 * 60 + now.second)
+        order_index = int(now.day * now.hour * 60 * 60 + now.second)
 
         try:
             order = session.place_order(
                 category="spot",
                 symbol=trading_pair,
                 side=side,
-                orderType="Market",
+                orderType="Limit",
                 qty=base_size,
+                price=base_price,
                 timeInForce="GTC",
                 orderLinkId=str(order_index),
                 isLeverage=0,
