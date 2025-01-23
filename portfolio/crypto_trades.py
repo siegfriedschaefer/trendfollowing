@@ -88,6 +88,19 @@ class CryptoTrades:
       """
       trades = self.get_trades(symbol)
       return sum(trade.value() for trade in trades)
+    
+    def total_fees(self, symbol=None):
+        """
+        Returns the total fees paid for all trades, optionally filtered by symbol.
+    
+        Args:
+            symbol (str, optional): The symbol to filter by.
+    
+        Returns:
+            float: The total fees paid for all trades.
+        """
+        trades = self.get_trades(symbol)
+        return sum(trade.fees for trade in trades)
 
     def profit_loss(self, symbol):
         """
@@ -112,4 +125,4 @@ class CryptoTrades:
             elif trade.trade_type == "sell":
                 total_sold += trade.value()
 
-        return total_sold - total_bought
+        return total_sold - total_bought - self.total_fees(symbol)
